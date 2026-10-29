@@ -1,3 +1,4 @@
+
 package com.example.library.book.rest;
 
 import com.example.library.book.application.dto.BookResponseDTO;
@@ -14,16 +15,16 @@ import java.util.UUID;
 public class BookController {
 
     @Autowired
-    private BookService Service;
+    private BookService service;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<BookResponseDTO> findAll() {
-        return Service.findAll();
+        return service.findAll();
     }
 
-    @GetMapping(value = "{/id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public BookResponseDTO findById(@PathVariable("id") UUID id) {
-        return Service.findById(id);
+        return service.findById(id);
     }
 
     @PostMapping(
@@ -31,7 +32,7 @@ public class BookController {
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
     public BookResponseDTO create(@RequestBody BookResponseDTO book) {
-        return Service.create(book);
+        return service.create(book);
     }
 
     @PutMapping(
@@ -39,10 +40,11 @@ public class BookController {
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
     public BookResponseDTO update(@RequestBody BookResponseDTO book) {
-        return Service.update(book);
+        return service.update(book);
     }
+
     @DeleteMapping(value = "/{id}")
     public BookResponseDTO delete(@PathVariable("id") UUID id) {
-       return Service.delete(id);
+        return service.delete(id);
     }
 }
