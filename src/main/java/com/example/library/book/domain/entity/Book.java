@@ -35,10 +35,16 @@ public class Book {
     @Column(nullable = false)
     private LocalDate date;
 
+    public Book() {
 
-    public void getDescription(String description) {
     }
 
-    public void getQuantityLent(int quantityLent) {
+    public int getDescription(String description) {
+        return quantity;
+    }
+
+    public int getQuantityLent(int quantityLent) {
+        quantityLent = quantityLent - quantity;
+        return quantityLent;
     }
 }
