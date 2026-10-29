@@ -1,13 +1,10 @@
-package com.example.book;
+package com.example.library;
 
 import org.springframework.ai.vectorstore.mariadb.autoconfigure.MariaDbStoreAutoConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
-
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.flyway.autoconfigure.FlywayAutoConfiguration;
 import org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration;
 
@@ -18,10 +15,10 @@ import org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration;
 		MariaDbStoreAutoConfiguration.class
 
 })
-public class BookApplication {
+public class LibraryApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(BookApplication.class, args);
+		SpringApplication.run(LibraryApplication.class, args);
 	}
 }
 
