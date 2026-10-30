@@ -1,50 +1,46 @@
+
 package com.example.library.book.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
-
 @Entity
 @Table(name = "book")
 @Getter
 @Setter
+@NoArgsConstructor
 @AllArgsConstructor
 public class Book {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false, updatable = false)
     private UUID id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, length = 100)
     private String nome;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 100)
     private String description;
 
     @Column(nullable = false)
     private int quantity;
 
-    @Column(nullable = false)
+    @Column(name = "quantity_lent", nullable = false)
     private int quantityLent;
 
     @Column(nullable = false)
     private LocalDate date;
 
-    public Book() {
-
-    }
-
-    public int getDescription(String description) {
-        return quantity;
-    }
-
-    public int getQuantityLent(int quantityLent) {
-        quantityLent = quantityLent - quantity;
-        return quantityLent;
+    @PrePersist
+    public void generateId() {
+        if (id == null) {
+            id = UUID.randomUUID();
+        }
     }
 }

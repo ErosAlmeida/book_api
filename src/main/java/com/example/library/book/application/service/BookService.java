@@ -6,7 +6,6 @@ import com.example.library.book.domain.entity.Book;
 import com.example.library.book.domain.repository.BookRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,57 +18,72 @@ public class BookService {
         this.repository = repository;
     }
 
-    public BookResponseDTO update(BookResponseDTO book) {
-        Book existingBook = repository.findById(book.getId())
-                .orElseThrow(() -> new RuntimeException("Livro não encontrado"));
-        existingBook.setNome(book.getNome());
-        existingBook.setDescription(book.getDescription());
-        existingBook.setQuantityLent(book.getQuantityLent());
-        existingBook.setDate(book.getDate());
+    public BookResponseDTO create(BookResponseDTO dto) {
 
-        Book updatedBook = repository.save(existingBook);
-        return new BookResponseDTO(
-                updatedBook.getId(),
-                updatedBook.getNome(),
-                updatedBook.getDescription(),
-                updatedBook.getQuantity()
-        );
+        Book book = new Book();
+
+        book.setNome(dto.getNome());
+        book.setDescription(dto.getDescription());
+        book.setQuantity(dto.getQuantity());
+        book.setQuantityLent(dto.getQuantityLent());
+        book.setDate(dto.getDate());
+
+        Book savedBook = repository.save(book);
+
+        return toDTO(savedBook);
     }
 
     public List<BookResponseDTO> findAll() {
-      List<Book> books = repository.findAll();
-      List<BookResponseDTO> bookResponseDTOList = new ArrayList<>();
-      for (Book book : books) {
-          bookResponseDTOList.add(new BookResponseDTO());
-      }
-      return bookResponseDTOList;
-
+        return repository.findAll()
+                .stream()
+                .map(this::toDTO)
+                .toList();
     }
 
     public BookResponseDTO findById(UUID id) {
-        Book existingBook = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("ID de livro inexistente"));
-        return new BookResponseDTO();
-    }
 
-    public BookResponseDTO create(BookResponseDTO book) {
-        Book createdBook = new Book();
-        createdBook.setId(book.getId());
-        createdBook.setNome(book.getNome());
-        createdBook.setDescription(book.getDescription());
-        createdBook.setQuantityLent(book.getQuantityLent());
-        createdBook.setDate(book.getDate());
-
-        Book savedBook = repository.save(createdBook);
-
-        return new BookResponseDTO();
-    }
-
-    public BookResponseDTO delete(UUID id) {
         Book book = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Livro não encontrado"));
+                .orElseThrow(() ->
+                        new RuntimeException("Livro não encontrado"));
+
+        return toDTO(book);
+    }
+
+    public BookResponseDTO update(BookResponseDTO dto) {
+
+        Book book = repository.findById(dto.getId())
+                .orElseThrow(() ->
+                        new RuntimeException("Livro não encontrado"));
+
+        book.setNome(dto.getNome());
+        book.setDescription(dto.getDescription());
+        book.setQuantity(dto.getQuantity());
+        book.setQuantityLent(dto.getQuantityLent());
+        book.setDate(dto.getDate());
+
+        Book updatedBook = repository.save(book);
+
+        return toDTO(updatedBook);
+    }
+
+    public void delete(UUID id) {
+
+        Book book = repository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Livro não encontrado"));
 
         repository.delete(book);
-        return null;
+    }
+
+    private BookResponseDTO toDTO(Book book) {
+
+        return new BookResponseDTO(
+                book.getId(),
+                book.getNome(),
+                book.getDescription(),
+                book.getQuantity(),
+                book.getQuantityLent(),
+                book.getDate()
+        );
     }
 }
