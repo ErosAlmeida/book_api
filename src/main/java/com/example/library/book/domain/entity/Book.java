@@ -31,8 +31,8 @@ public class Book {
     @Column(nullable = false)
     private int quantity;
 
-    @Column(name = "quantity_lent", nullable = false)
-    private int quantityLent;
+    @Column(name = "quantity_lent", nullable = false )
+    private int quantityLent = 0;
 
     @Column(nullable = false)
     private LocalDate date;
