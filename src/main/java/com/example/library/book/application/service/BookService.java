@@ -1,13 +1,17 @@
 
 package com.example.library.book.application.service;
 
+import com.example.library.book.application.dto.BookCreateDTO;
+import com.example.library.book.application.dto.BookRequestDTO;
 import com.example.library.book.application.dto.BookResponseDTO;
 import com.example.library.book.domain.entity.Book;
 import com.example.library.book.domain.repository.BookRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class BookService {
@@ -18,28 +22,28 @@ public class BookService {
         this.repository = repository;
     }
 
-    public BookResponseDTO create(BookResponseDTO dto) {
+    public Book create(BookCreateDTO dto) {
 
         Book book = new Book();
 
-        book.setNome(dto.getNome());
-        book.setDescription(dto.getDescription());
-        book.setQuantity(dto.getQuantity());
-        book.setQuantityLent(dto.getQuantityLent());
-        book.setDate(dto.getDate());
+        book.setNome(dto.name());
+        book.setDescription(dto.description());
+        book.setQuantity(dto.quantity());
+
+        book.setQuantityLent(0);
+        book.setDate(LocalDate.now());
 
         Book savedBook = repository.save(book);
 
-        return toDTO(savedBook);
+        return savedBook;
     }
 
     public List<BookResponseDTO> findAll() {
         return repository.findAll()
                 .stream()
                 .map(this::toDTO)
-                .toList();
+                .collect(Collectors.toList());
     }
-
     public BookResponseDTO findById(UUID id) {
 
         Book book = repository.findById(id)

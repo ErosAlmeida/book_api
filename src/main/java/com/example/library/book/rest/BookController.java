@@ -1,8 +1,12 @@
 
 package com.example.library.book.rest;
 
+import com.example.library.book.application.dto.BookCreateDTO;
+import com.example.library.book.application.dto.BookRequestDTO;
 import com.example.library.book.application.dto.BookResponseDTO;
 import com.example.library.book.application.service.BookService;
+import com.example.library.book.domain.entity.Book;
+import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,7 +37,9 @@ public class BookController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public BookResponseDTO create(@RequestBody BookResponseDTO book) {
+    public Book create(
+            @Valid @RequestBody BookCreateDTO book
+    ) {
         return service.create(book);
     }
 
